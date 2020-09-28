@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring.xsd">
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration bindingMode="off" component="restlet"
+            contextPath="/hello" host="0.0.0.0" port="6666"/>
+        <rest id="rest-4d849db3-f086-43c5-80f9-2447c388dc44">
+            <get id="e6b74996-b974-4fc1-b176-110e0e0c82c8" uri="/{name}">
+                <to uri="direct:helo"/>
+            </get>
+        </rest>
+        <route id="simple-route">
+            <from id="_to1" uri="direct:helo"/>
+            <log id="route-log" message=">>> ${header.name}"/>
+            <delay id="_delay1">
+                <constant>{{delay.ms}}</constant>
+            </delay>
+            <setBody id="route-setBody">
+                <simple>Hello ${header.name}</simple>
+            </setBody>
+        </route>
+    </camelContext>
+</beans>
